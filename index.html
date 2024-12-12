@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planet Clicker</title>
+    <link rel="shortcut icon"type="image/x-icon" href="data:image/x-icon;,">
+    <style>
+		/* https://stackoverflow.com/questions/33948011/creating-a-starry-background-in-css */
+        * {
+            background-color: black;
+            background-image: radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 0px),
+                              radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 0px),
+                              radial-gradient(white, rgba(255, 255, 255, .1) 2px, transparent 0px),
+                              radial-gradient(rgba(255, 255, 255, .4), rgba(255, 255, 255, .1) 2px, transparent 0px);
+            background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px;
+            background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
+            user-select: none;
+        }
+
+        .title_text {
+            color: white;
+            font-size: 29px;
+            position: relative;
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold;
+        }
+
+        .title_nav_buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .title_nav_buttons button {
+            color: white;
+            border: 2px solid white;
+            border-radius: 50px;
+            width: 170px;
+            background-color: transparent;
+            padding: 10px 20px;
+            margin: 10px 0;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .title_nav_buttons button:hover {
+            background-color: white;
+            color: black;
+        }
+
+        .earth {
+            display: none;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 50% 50%, #0a74da, #0056a1);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+            animation: rotateEarth 20s linear infinite;
+        }
+
+        .earth:hover {
+            transform: translate(-50%, -50%) scale(1.2);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.9);
+        }
+
+        .earth:active {
+            transform: translate(-50%, -50%) scale(0.9);
+            box-shadow: 0 0 50px rgba(255, 255, 255, 1);
+            transition: none;
+        }
+
+        @keyframes rotateEarth {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        .land {
+            position: absolute;
+            background-color: #7ec850;
+        }
+
+        .land1 {
+            width: 40px;
+            height: 60px;
+            border-radius: 20%;
+            top: 20%;
+            left: 15%;
+            transform: rotate(-20deg);
+        }
+
+        .land2 {
+            width: 40px;
+            height: 30px;
+            border-radius: 20%;
+            top: 70%;
+            left: 25%;
+        }
+
+        .land3 {
+            width: 50px;
+            height: 30px;
+            border-radius: 20%;
+            top: 50%;
+            right: 11%;
+        }
+
+        .land4 {
+            width: 40px;
+            height: 30px;
+            border-radius: 20%;
+            top: 10%;
+            left: 45%;
+        }
+
+        .credits_text {
+            display: none;
+            color: white;
+            font-size: 24px;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            position: relative;
+            margin-top: 13%;
+            transform: translateY(50%);
+        }
+
+        .credits_back_button {
+            display: none;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .credits_back_button button {
+            color: white;
+            border: 2px solid white;
+            border-radius: 50px;
+            width: 170px;
+            background-color: transparent;
+            padding: 10px 20px;
+            margin: 10px 0;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            display: block;
+        }
+
+        .credits_back_button button:hover {
+            background-color: white;
+            color: black;
+        }
+
+        .settings_text {
+            display: none;
+            color: white;
+            font-size: 30px;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            position: relative;
+            margin-top: 2%;
+            font-weight: bold;
+        }
+
+        .settings_back_button {
+            display: none;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .settings_back_button button {
+            color: white;
+            border: 2px solid white;
+            border-radius: 50px;
+            width: 170px;
+            background-color: transparent;
+            padding: 10px 20px;
+            margin: 10px 0;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            display: block;
+        }
+
+        .settings_back_button button:hover {
+            background-color: white;
+            color: black;
+        }
+
+        .credits_title {
+            display: none;
+            color: white;
+            font-size: 30px;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            position: relative;
+            margin-top: 2%;
+            font-weight: bold;
+        }
+
+        .money_display {
+            display: none;
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 35px;
+            text-align: center;
+            margin-top: 2%;
+            font-weight: bold;
+        }
+
+        .per_second_display {
+            display: none;
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 25px;
+            text-align: center;
+            top: 25px;
+        }
+
+        .copyright_notice {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            color: rgb(126, 126, 126);
+            font-size: 14px;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: left;
+            z-index: 1000;
+        }
+
+        .settings_buttons {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .settings_buttons button {
+            color: white;
+            border: 2px solid white;
+            border-radius: 50px;
+            width: 170px;
+            background-color: transparent;
+            padding: 10px 20px;
+            margin: 10px 0;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+		.settings_buttons button:hover {
+            background-color: white;
+            color: black;
+        }
+        
+        .nav_menu_button {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            position: absolute;
+            top: 1.5%;
+            right: 1.5%;    
+        }
+
+        .nav_menu_button button {
+            color: white;
+            border: 2px solid white;
+            border-radius: 50px;
+            width: 170px;
+            background-color: transparent;
+            padding: 10px 20px;
+            margin: 10px 0;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+		.nav_menu_button button:hover {
+            background-color: white;
+            color: black;
+        }
+
+        .nav_shop_button {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            position: absolute;
+            bottom: 1.5%;
+            right: 1.5%;    
+        }
+
+        .nav_shop_button button {
+            color: white;
+            border: 2px solid white;
+            border-radius: 50px;
+            width: 170px;
+            background-color: transparent;
+            padding: 10px 20px;
+            margin: 10px 0;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+		.nav_shop_button button:hover {
+            background-color: white;
+            color: black;
+        }
+
+        .shop_money_display {
+            display: none;
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 35px;
+            text-align: center;
+            margin-top: 2%;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- title screen -->
+    <div class="title_text" id="title_text">
+        <p>Planet Clicker</p>
+    </div>
+
+    <div class="title_nav_buttons" id="title_nav_buttons">
+        <button onclick="handle_play_clicked()">Play</button>
+        <button onclick="handle_settings_clicked()">Settings</button>
+        <button onclick="handle_credits_clicked()">Credits</button>
+    </div>
+
+    <!-- main game -->
+    <div class="earth" id="earth" onclick="handle_earth_clicked()">
+        <div class="land land1"></div>
+        <div class="land land2"></div>
+        <div class="land land3"></div>
+        <div class="land land4"></div>
+    </div>
+
+    <div class="money_display" id="money_display">x ENERGY</div>
+    <div class="per_second_display" id="per_second_display">x PER SECOND</div>
+
+    <div class="nav_menu_button" id="nav_menu_button">
+        <button onclick="handle_menu_clicked()">Menu</button>
+    </div>
+
+    <div class="nav_shop_button" id="nav_shop_button">
+        <button>Shop</button>
+    </div>
+
+    <!-- shop page -->
+    <div class="shop_money_display" id="shop_money_display"> x ENERGY</div>
+
+    <!-- settings page -->
+    <div class="settings_text" id="settings_text">
+        <p>Settings</p>
+    </div>
+
+    <div class="settings_back_button" id="settings_back_button">
+        <button onclick="handle_settings_back_clicked()">Back</button>
+    </div>
+
+	<div class="settings_buttons" id="settings_buttons">
+        <button onclick="handle_save_clicked()">Save</button>
+        <button onclick="handle_load_clicked()">Load</button>
+    </div>
+
+    <!-- credits page -->
+    <div class="credits_title" id="credits_title">
+        <p>Credits</p>
+    </div>
+
+    <div class="credits_text" id="credits_text">
+        <p>Developed by TwistedCarts</p>
+        <p>Background CSS design taken from stackoverflow</p>
+    </div>
+
+    <div class="credits_back_button" id="credits_back_button">
+        <button onclick="handle_credits_back_clicked()">Back</button>
+    </div>
+
+    <!-- copyright notice (not really) -->
+    <div class="copyright_notice" id="copyright_notice">
+        &copy; 2024 TwistedCarts
+    </div>
+
+    <script>
+        // https://stackoverflow.com/questions/5199902/how-to-prevent-an-http-request-just-for-a-favicon
+        try {
+            var favIcon = "AAABAAEAICAAAAEAIACoEAAAFgAAACgAAAAgAAAAQAAAAAEAIAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD0ZGRv+UlJT/urq6/8XFxf+/v7//q6ur/4iIiP9aWlr/Kysr/wgICD4AAAAACAgIIktLS/+Ghob/jY2N/3d3d/9NTU3/Gxsb/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB0dHT/8vLy//////////////////////////////////z8/P/o6Oj/urq6/3R0dP8vLy//Ly8v/3x8fP/W1tb//v7+//v7+//X19f/fn5+/xsbG/8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKioq/9/f3////////////////////////////////////////////////////////v7+/+fn5/+ioqL/R0dH/yUlJf9ra2v/09PT//7+/v/+/v7/x8fH/zo6Ov8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABCQkL/8fHx///////////////////////i4uL/pqam/5mZmf/s7Oz////////////////////////////19fX/tbW1/0xMTP8mJib/fHx8/+Tk5P//////2dnZ/zk5Of8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACsrK//j4+P/////////////////0tLS/zMzM/8BAQH/bGxs//n5+f//////////////////////////////////////9fX1/6ysrP87Ozv/MzMz/6ioqP/7+/v/xMTE/xgYGP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKurq/////////////////+JiYn/AAAA/yUlJf/b29v//////////////////////////////////////////////////////+vr6/+EhIT/IyMj/2VlZf/i4uL/eXl5/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASkpK//Ly8v///////////5aWlv8AAAD/dHR0//////////////////////////////////////////////////////////////////7+/v/Gxsb/Q0ND/zk5Of+Ojo7/FBQU/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlpaW////////////1tbW/ycnJ/+0tLT////////////////////////////////////////////////////////////////////////////r6+v/c3Nz/x0dHf8KCgr/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAdHR3/wsLC///////9/f3/n5+f/9ra2v/////////////////////////////////////////////////////////////////////////////////6+vr/nJyc/xgYGP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAyMjL/1NTU///////6+vr//Pz8///////////////////////////////////////////////////////////////////////////////////////+/v7/tbW1/yIiIv8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA7Ozv/1tbW////////////////////////////////////////////////////////////////////////////////////////////////////////////vb29/yIiIv8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA3Nzf/zMzM////////////////////////////////////////////////////////////////////////////////////////////////////////////tbW1/xgYGP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAnJyf/vr6+///////////////////////////////////////////////////////////////////////////////////////09PT/8/Pz////////////mJiY/wkJCeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABHR0f/8/Pz/////////////////////////////////////////////////////////////////////////////////6Ojo/+Pj4/////////////39/f/YWFh/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACoqKj////////////////////////////////////////////////////////////////////////////p6en/OTk5/zo6Ov/y8vL////////////S0tL/HR0d/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC0tLf/V1dX/////////////////////////////////////////////////////////////////+fn5/3d3d/8AAAD/LCws/+vr6/////////////7+/v9oaGj/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD8/P//V1dX///////////////////////////////////////////////////////T09P+BgYH/CAgI/wkJCf9/f3///f39/////////////////6enp/8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACsrK/+np6f/8/Pz////////////////////////////////////////////2dnZ/4KCgv+FhYX/ubm5//b29v//////////////////////ubm5/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABERET/k5OT/8bGxv/c3Nz/39/f/9TU1P/j4+P//f39//////////////////////////////////////////////////////+MjIz/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACcnJ8BoaGj/ra2t/97e3v/39/f////////////////////////////6+vr/tra2/yIiIv8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEZGRv9ubm7/jIyM/52dnf+dnZ3/h4eH/1JSUv8cHBwJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////////////////////////gAgP/4AAA/8AAAH/AAAA/wAAAH+AAAB/gAAAP8AAAD/AAAA/4AAAH/AAAA/4AAAH/AAAA/4AAAP/AAAB/wAAAf+AAAH/wAAB//AAAf//wAH///wD//////////////////////////8=";
+            var docHead = document.getElementsByTagName('head')[0];
+            var newLink = document.createElement('link');
+            newLink.rel = 'shortcut icon';
+            newLink.href = 'data:image/png;base64,'+favIcon;
+            docHead.appendChild(newLink);
+        } catch (error) {
+            if (dev_switch == 1) {
+                console.warn("favicon failed to load (likely an IE user-agent):", error);
+            }
+        }
+
+        // defining game variables
+        var money_pure = 0;
+        var money_sanitized = null;
+        var per_second = 0;
+        var per_second_sanitized = null;
+        var per_click = 1;
+        var dev_switch = 1; // check to 0 in prod
+
+        // defining elements
+        var title_buttons_elem = document.getElementById("title_nav_buttons");
+        var title_text_elem = document.getElementById("title_text");
+        var earth_elem = document.getElementById("earth");
+        var credits_text_elem = document.getElementById("credits_text");
+        var credits_back_button_elem = document.getElementById("credits_back_button");
+        var settings_text_elem = document.getElementById("settings_text");
+        var settings_back_button_elem = document.getElementById("settings_back_button");
+        var credits_title_elem = document.getElementById("credits_title");
+        var money_display_elem = document.getElementById("money_display");
+        var per_second_display_elem = document.getElementById("per_second_display");
+        var copyright_notice_elem = document.getElementById("copyright_notice");
+		var settings_buttons_elem = document.getElementById("settings_buttons");
+        var nav_menu_button_elem = document.getElementById("nav_menu_button");
+        var nav_shop_button_elem = document.getElementById("nav_shop_button");
+        var shop_money_display_elem = document.getElementById("shop_money_display");
+
+		// math functions
+		function abbr_value(v) {
+			if (isNaN(v) || typeof v !== 'number' || v === Infinity || v === -Infinity) {
+				alert("Error code 246\nPlease open an issue on GitHub\nTHIS IS A BUG"); 
+			} else {
+				const suffixes = [' ', ' THOUSAND', ' MILLION', ' BILLION', ' TRILLION', ' QUADRILLION'];
+				let suffix_index = 0;
+
+				while (v >= 1000 && suffix_index < suffixes.length - 1) {
+					v /= 1000;
+					suffix_index++;
+				}
+
+				// STABLE - shows decimals in numbers < 999 (EG: 7.0 instead of 7)
+				v = v.toFixed(1);
+
+				// UNSTABLE - attempt at displaying decimals in values > 999
+                /*
+                    BUG REPORT (12/12/24):
+                        EXPECTED BEHAVIOR: returns one decimal value as long as the value passed is > 1000 (EG: 12.5 THOUSAND)
+                        RESULT WHEN RAN: returns 3 decimal places (EG: 1.022 THOUSAND)
+                        CONSOLE OUTPUT:
+                            money_pure = 999
+                            index.html:573 (589) 1 THOUSAND
+                            index.html:573 (589) 1.001 THOUSAND
+                            index.html:573 (589) 1.002 THOUSAND
+                            index.html:573 (589) 1.003 THOUSAND
+                            index.html:573 (589) 1.004 THOUSAND
+                            index.html:573 (589) 1.005 THOUSAND
+                            index.html:573 (589) 1.006 THOUSAND
+                            index.html:573 (589) 1.007 THOUSAND
+                            index.html:573 (589) 1.008 THOUSAND
+                            index.html:573 (589) 1.009 THOUSAND
+                            index.html:573 (589) 1.01 THOUSAND <-- weird.. should return as 1.010 if the bug was consistent i think
+                            index.html:573 (589) 1.011 THOUSAND
+                            index.html:573 (589) 1.012 THOUSAND
+                */
+                // if (v > 1000) {
+                //     v = v.toFixed(1);
+                // }
+
+				return v + suffixes[suffix_index];
+			}
+		}
+
+		// loops
+		setInterval(function() {
+			if (typeof money_pure === 'number' && !isNaN(money_pure)) {
+				money_pure = money_pure + per_second;
+			}
+		}, 1000);
+
+		setInterval(function() {
+			if (typeof money_pure === 'number' && !isNaN(money_pure) && typeof per_second === 'number' && !isNaN(per_second)) {
+				money_sanitized = abbr_value(money_pure);
+				per_second_sanitized = abbr_value(per_second);
+
+				money_display_elem.innerHTML = money_sanitized + " ENERGY";
+                shop_money_display_elem.innerHTML = money_sanitized + " ENERGY";
+				per_second_display_elem.innerHTML = per_second_sanitized + " PER SECOND";
+			}
+		}, 10);
+
+
+        // handle user input
+        function handle_play_clicked() {
+            title_buttons_elem.style.display = "none";
+            title_text_elem.style.display = "none";
+            earth_elem.style.display = "block";
+            credits_text_elem.style.display = "none";
+            credits_back_button_elem.style.display = "none";
+            settings_back_button_elem.style.display = "none";
+            credits_title_elem.style.display = "none";
+            money_display_elem.style.display = "block";
+            per_second_display_elem.style.display = "block";
+            copyright_notice_elem.style.display = "none";
+			settings_buttons_elem.style.display = "none";
+            nav_menu_button.style.display = "flex";
+            nav_shop_button_elem.style.display = "flex";
+        };
+
+        function handle_settings_clicked() {
+            title_buttons_elem.style.display = "none";
+            title_text_elem.style.display = "none";
+            credits_text_elem.style.display = "none";
+            earth_elem.style.display = "none";
+            credits_back_button_elem.style.display = "none";
+            settings_text_elem.style.display = "block"
+            settings_back_button_elem.style.display = "block";
+            credits_title_elem.style.display = "none";
+            money_display_elem.style.display = "none";
+            per_second_display_elem.style.display = "none";
+			settings_buttons_elem.style.display = "flex";
+            nav_menu_button.style.display = "none";
+            nav_shop_button_elem.style.display = "none";
+        };
+
+        function handle_credits_clicked() {
+            title_buttons_elem.style.display = "none";
+            title_text_elem.style.display = "none";
+            earth_elem.style.display = "none";
+            credits_text_elem.style.display = "block";
+            credits_back_button_elem.style.display = "flex"
+            settings_text_elem.style.display = "none";
+            settings_back_button_elem.style.display = "none";
+            credits_title_elem.style.display = "block";
+            money_display_elem.style.display = "none";
+            per_second_display_elem.style.display = "none";
+			settings_buttons_elem.style.display = "none";
+            nav_menu_button.style.display = "none";
+            nav_shop_button_elem.style.display = "none";
+        };
+
+        function handle_credits_back_clicked() {
+            title_buttons_elem.style.display = "flex";
+            title_text_elem.style.display = "block";
+            earth_elem.style.display = "none";
+            credits_text_elem.style.display = "none";
+            credits_back_button_elem.style.display = "none";
+            settings_text_elem.style.display = "none";
+            settings_back_button_elem.style.display = "none";
+            credits_title_elem.style.display = "none";
+			settings_buttons_elem.style.display = "none";
+            nav_menu_button.style.display = "none";
+            nav_shop_button_elem.style.display = "none";
+        }
+
+        function handle_settings_back_clicked() {
+            title_buttons_elem.style.display = "flex";
+            title_text_elem.style.display = "block";
+            earth_elem.style.display = "none";
+            credits_text_elem.style.display = "none";
+            credits_back_button_elem.style.display = "none";
+            settings_text_elem.style.display = "none";
+            settings_back_button_elem.style.display = "none";
+            credits_title_elem.style.display = "none";
+			settings_buttons_elem.style.display = "none";
+            nav_menu_button.style.display = "none";
+            nav_shop_button_elem.style.display = "none";
+        }
+
+        function handle_earth_clicked() {
+            money_pure = money_pure + per_click;
+            money_sanitized = abbr_value(money_pure);
+
+            if (dev_switch == 1) {
+                console.log(money_sanitized);
+            }
+
+            money_display_elem.innerHTML = money_sanitized + " ENERGY";
+        }
+
+		function handle_save_clicked() {
+			console.log("Save init");
+		}
+
+		function handle_load_clicked() {
+			console.log("load init");
+		}
+
+        function handle_menu_clicked() {
+            title_buttons_elem.style.display = "flex";
+            title_text_elem.style.display = "block";
+            earth_elem.style.display = "none";
+            credits_text_elem.style.display = "none";
+            credits_back_button_elem.style.display = "none";
+            settings_text_elem.style.display = "none";
+            settings_back_button_elem.style.display = "none";
+            credits_title_elem.style.display = "none";
+			settings_buttons_elem.style.display = "none";
+            nav_menu_button.style.display = "none";
+            per_second_display_elem.style.display = "none";
+            copyright_notice_elem.style.display = "block";
+            money_display_elem.style.display = "none";
+            nav_shop_button_elem.style.display = "none";
+        }
+
+        // ability to press space instead of click (scrapped)
+/*         document.body.onkeyup = function(e) {
+            if (e.key == " " ||
+                e.code == "Space" ||      
+                e.keyCode == 32      
+            ) {
+                handle_earth_clicked();
+            }
+        } */
+    </script>
+</body>
+</html>
