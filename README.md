@@ -3,7 +3,7 @@
 A simple clicker game, all in a single HTML file with **no HTTP requests**.
 
 ## How to Play
-- Download the [index.html](https://github.com/twistedcarts/planet-clicker/releases/download/v1.0/index.html) file from the repo.
+- Download the [index.html](https://github.com/twistedcarts/planet-clicker/releases/download/1.0/index.html) file from the repo.
 - Open the file in your browser.
 - Start clicking and grow your planet!
 
