@@ -407,7 +407,7 @@
         var per_second = 0;
         var per_second_sanitized = null;
         var per_click = 1;
-        var dev_switch = 1; // check to 0 in prod
+        var dev_switch = 0; // check to 0 in prod
 
         // defining elements
         var title_buttons_elem = document.getElementById("title_nav_buttons");
@@ -439,7 +439,7 @@
                 console.warn("favicon failed to load (likely an IE user-agent):", error);
             }
         }
-        
+
 		// math functions
 		function abbr_value(v) {
 			if (isNaN(v) || typeof v !== 'number' || v === Infinity || v === -Infinity) {
