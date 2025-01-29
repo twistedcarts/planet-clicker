@@ -1,4 +1,4 @@
-# 🌍 Planet Clicker
+# Planet Clicker
 
 A simple clicker game, all in a single HTML file with **no HTTP requests**.
 
