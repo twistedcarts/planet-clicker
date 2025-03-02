@@ -330,6 +330,216 @@
             margin-top: 2%;
             font-weight: bold;
         }
+
+        .shop_page {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+            overflow-y: auto;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            transform: translateX(100%);
+            opacity: 0;
+            z-index: 1000;
+            border-left: 2px solid white;
+        }
+
+        .shop_page.open {
+            display: block;
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .shop_page .shop_title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+            border-bottom: 1px solid white;
+            padding-bottom: 10px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .shop_page .shop_item {
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .shop_page .shop_item_content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .shop_page .item_info {
+            flex: 1;
+        }
+
+        .shop_page .item_title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .shop_page .item_stats {
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        .shop_page .item_image {
+            width: 64px;
+            height: 64px;
+            margin-left: 15px;
+            position: relative;
+            background: transparent;
+            overflow: hidden;
+        }
+
+        /* Solar Panel Design */
+        .solar-panel {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #9ca3af;
+            padding: 4px;
+            box-sizing: border-box;
+        }
+
+        .solar-cell {
+            position: absolute;
+            width: 35%;
+            height: 35%;
+            background: #e5e7eb;
+            border: 1px solid #9ca3af;
+        }
+
+        .solar-cell:nth-child(1) { top: 15%; left: 15%; }
+        .solar-cell:nth-child(2) { top: 15%; right: 15%; }
+        .solar-cell:nth-child(3) { bottom: 15%; left: 15%; }
+        .solar-cell:nth-child(4) { bottom: 15%; right: 15%; }
+
+        /* Wind Turbine Design */
+        .wind-turbine {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .turbine-pole {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 70%;
+            background: #9ca3af;
+        }
+
+        .turbine-head {
+            position: absolute;
+            top: 25%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 12px;
+            background: #e5e7eb;
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        .turbine-blade {
+            position: absolute;
+            top: 28%;
+            left: 50%;
+            width: 4px;
+            height: 24px;
+            background: #f3f4f6;
+            transform-origin: center bottom;
+        }
+
+        .blade1 { transform: translate(-50%, -50%) rotate(0deg); }
+        .blade2 { transform: translate(-50%, -50%) rotate(120deg); }
+        .blade3 { transform: translate(-50%, -50%) rotate(240deg); }
+
+        .shop_page .shop_item button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        .shop_page .shop_item .item_info {
+            flex: 1;
+            text-align: left;
+        }
+
+        .shop_page .shop_item .item_price {
+            flex: 1;
+            text-align: right;
+        }
+
+        .shop_page .shop_item .item_image {
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+
+        .shop_page .shop_item button {
+            color: white;
+            border: 2px solid white;
+            border-radius: 50px;
+            width: 100%;
+            background-color: transparent;
+            padding: 10px 20px;
+            margin: 10px 0;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .shop_page .shop_item button:hover {
+            background-color: white;
+            color: black;
+        }
+
+        .shop_page .shop_back_button {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .shop_page .shop_back_button button {
+            color: white;
+            border: 2px solid white;
+            border-radius: 50px;
+            width: 170px;
+            background-color: transparent;
+            padding: 10px 20px;
+            margin: 10px 0;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .shop_page .shop_back_button button:hover {
+            background-color: white;
+            color: black;
+        }
+
+        .shop_page .shop_separator {
+        border-bottom: 1px solid white;
+        margin: 10px 0;
+        }
     </style>
 </head>
 <body>
@@ -359,12 +569,53 @@
         <button onclick="handle_menu_clicked()">Menu</button>
     </div>
     
-    <!-- <div class="nav_shop_button" id="nav_shop_button">
-        <button>Shop</button>
-    </div> -->
+    <div class="nav_shop_button" id="nav_shop_button">
+        <button onclick="handle_shop_clicked()">Shop</button>
+    </div>
 
     <!-- shop page -->
     <div class="shop_money_display" id="shop_money_display"> x ENERGY</div>
+    <div class="shop_page" id="shop_page">
+        <div class="shop_title">Shop</div>
+        <div class="shop_item">
+            <div class="shop_item_content">
+                <div class="item_info">
+                    <div class="item_title">Solar Panel (0 owned)</div>
+                    <div class="item_stats">Price: 250 | CPS: 1</div>
+                </div>
+                <div class="item_image">
+                    <div class="solar-panel">
+                        <div class="solar-cell"></div>
+                        <div class="solar-cell"></div>
+                        <div class="solar-cell"></div>
+                        <div class="solar-cell"></div>
+                    </div>
+                </div>
+            </div>
+            <button onclick="buy_item(1)">Buy</button>
+        </div>
+        <div class="shop_item">
+            <div class="shop_item_content">
+                <div class="item_info">
+                    <div class="item_title">Wind Turbine (0 owned)</div>
+                    <div class="item_stats">Price: 1,000 | CPS: 5</div>
+                </div>
+                <div class="item_image">
+                    <div class="wind-turbine">
+                        <div class="turbine-pole"></div>
+                        <div class="turbine-head"></div>
+                        <div class="turbine-blade blade1"></div>
+                        <div class="turbine-blade blade2"></div>
+                        <div class="turbine-blade blade3"></div>
+                    </div>
+                </div>
+            </div>
+            <button onclick="buy_item(2)">Buy</button>
+        </div>
+        <div class="shop_back_button">
+            <button onclick="handle_shop_back_clicked()">Back</button>
+        </div>
+    </div>
 
     <!-- settings page -->
     <div class="settings_text" id="settings_text">
@@ -382,7 +633,7 @@
 
     <!-- credits page -->
     <div class="credits_title" id="credits_title">
-        <p>Credits</p>
+        <p>Credits</p>  
     </div>
 
     <div class="credits_text" id="credits_text">
@@ -424,6 +675,7 @@
         var nav_menu_button_elem = document.getElementById("nav_menu_button");
         var nav_shop_button_elem = document.getElementById("nav_shop_button");
         var shop_money_display_elem = document.getElementById("shop_money_display");
+        var shop_page_elem = document.getElementById("shop_page");
 
         // https://stackoverflow.com/questions/5199902/how-to-prevent-an-http-request-just-for-a-favicon
         try {
@@ -590,6 +842,64 @@
             copyright_notice_elem.style.display = "block";
             money_display_elem.style.display = "none";
             nav_shop_button_elem.style.display = "none";
+        }
+
+        function handle_shop_clicked() {
+            shop_page_elem.classList.toggle("open");
+            if (shop_page_elem.classList.contains("open")) {
+                update_shop_display();
+            }
+        }
+
+        // Add shop item configurations
+        const shop_items = {
+            1: {
+                name: "Solar Panel",
+                base_cost: 250,
+                cps: 1,
+                owned: 0
+            },
+            2: {
+                name: "Wind Turbine",
+                base_cost: 1000,
+                cps: 5,
+                owned: 0
+            }
+        };
+        
+        function buy_item(item_id) {
+            const item = shop_items[item_id];
+            const cost = Math.floor(item.base_cost * Math.pow(1.15, item.owned));
+            
+            if (money_pure >= cost) {
+                money_pure -= cost; 
+                item.owned++;
+                per_second += item.cps;
+                update_shop_display();
+            }
+
+            if (dev_switch == 1) {   
+                console.log("item id: " + item_id);
+            }
+        }
+
+        function update_shop_display() {
+            const items = document.querySelectorAll('.shop_item');
+            items.forEach((item_elem, index) => {
+                const item_id = index + 1;
+                const item = shop_items[item_id];
+                const cost = Math.floor(item.base_cost * Math.pow(1.15, item.owned));
+                
+                const stats_elem = item_elem.querySelector('.item_stats');
+                const title_elem = item_elem.querySelector('.item_title');
+                
+                title_elem.textContent = `${item.name} (${item.owned} owned)`;
+                stats_elem.textContent = `Price: ${abbr_value(cost)} | CPS: ${item.cps}`;
+            });
+        }
+
+        function handle_shop_back_clicked() {
+            shop_page_elem.classList.remove("open");
         }
 
         // ability to press space instead of click (scrapped)
