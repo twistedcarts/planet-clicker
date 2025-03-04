@@ -321,6 +321,42 @@
             color: black;
         }
 
+        .planet_nav {
+            display: none;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 24px;
+        }
+
+        .planet_nav span {
+            margin: 0 15px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .planet_nav span:hover .unlock-info {
+            opacity: 1;
+        }
+
+        .planet_nav span:hover {
+            color: #aaa;
+        }
+
+        .planet_nav .prev {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .planet_nav .prev.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
         .shop_money_display {
             display: none;
             color: white;
@@ -346,6 +382,7 @@
             opacity: 0;
             z-index: 1000;
             border-left: 2px solid white;
+            /* padding-bottom: 150px; */
         }
 
         .shop_page.open {
@@ -402,7 +439,6 @@
             overflow: hidden;
         }
 
-        /* Solar Panel Design */
         .solar-panel {
             position: relative;
             width: 100%;
@@ -425,7 +461,6 @@
         .solar-cell:nth-child(3) { bottom: 15%; left: 15%; }
         .solar-cell:nth-child(4) { bottom: 15%; right: 15%; }
 
-        /* Wind Turbine Design */
         .wind-turbine {
             position: relative;
             width: 100%;
@@ -540,6 +575,155 @@
         border-bottom: 1px solid white;
         margin: 10px 0;
         }
+
+        .planet_nav span.locked {
+            color: #666;
+            cursor: not-allowed;
+            position: relative;
+        }
+
+        .planet_nav span.can-unlock {
+            color: #aaa;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .planet_nav span.can-unlock:hover {
+            color: #fff;
+        }
+
+        .planet_nav span.locked::after,
+        .planet_nav span.can-unlock::after {
+            position: absolute;
+            font-size: 14px;
+            top: -12px;
+            right: -12px;
+        }
+
+        .planet_nav span.locked::after {
+            content: "🔒";
+        }
+
+        .planet_nav span.can-unlock::after {
+            content: "💰";
+        }
+
+        .unlock-info {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid white;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            width: max-content;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .geothermal-plant {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .plant-building {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 30px;
+            background: #666;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .steam-vent {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 20px;
+            background: #999;
+        }
+
+        .nuclear-reactor {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .reactor-dome {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: #888;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .cooling-tower {
+            position: absolute;
+            bottom: 0;
+            right: 5px;
+            width: 20px;
+            height: 45px;
+            background: #777;
+            border-radius: 10px 10px 5px 5px;
+        }
+
+        .fusion-generator {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .reactor-core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            background: #4a90e2;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #4a90e2;
+        }
+
+        .energy-field {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            border: 2px solid #4a90e2;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 0.2;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0.5;
+            }
+        }
     </style>
 </head>
 <body>
@@ -561,6 +745,12 @@
         <div class="land land3"></div>
         <div class="land land4"></div>
     </div>
+
+    <!-- <div class="planet_nav" id="planet_nav">
+        <span class="prev" id="prev_planet">&lt;</span>
+        <span>EARTH</span>
+        <span class="next" id="next_planet">&gt;</span>
+    </div> -->
 
     <div class="money_display" id="money_display">x ENERGY</div>
     <div class="per_second_display" id="per_second_display">x PER SECOND</div>
@@ -612,6 +802,51 @@
             </div>
             <button onclick="buy_item(2)">Buy</button>
         </div>
+        <div class="shop_item">
+            <div class="shop_item_content">
+                <div class="item_info">
+                    <div class="item_title">Geothermal Plant (0 owned)</div>
+                    <div class="item_stats">Price: 5,000 | CPS: 25</div>
+                </div>
+                <div class="item_image">
+                    <div class="geothermal-plant">
+                        <div class="plant-building"></div>
+                        <div class="steam-vent"></div>
+                    </div>
+                </div>
+            </div>
+            <button onclick="buy_item(3)">Buy</button>
+        </div>
+        <div class="shop_item">
+            <div class="shop_item_content">
+                <div class="item_info">
+                    <div class="item_title">Nuclear Reactor (0 owned)</div>
+                    <div class="item_stats">Price: 25,000 | CPS: 100</div>
+                </div>
+                <div class="item_image">
+                    <div class="nuclear-reactor">
+                        <div class="reactor-dome"></div>
+                        <div class="cooling-tower"></div>
+                    </div>
+                </div>
+            </div>
+            <button onclick="buy_item(4)">Buy</button>
+        </div>
+        <!-- <div class="shop_item">
+            <div class="shop_item_content">
+                <div class="item_info">
+                    <div class="item_title">Fusion Generator (0 owned)</div>
+                    <div class="item_stats">Price: 100,000 | CPS: 400</div>
+                </div>
+                <div class="item_image">
+                    <div class="fusion-generator">
+                        <div class="reactor-core"></div>
+                        <div class="energy-field"></div>
+                    </div>
+                </div>
+            </div>
+            <button onclick="buy_item(5)">Buy</button>
+        </div> -->
         <div class="shop_back_button">
             <button onclick="handle_shop_back_clicked()">Back</button>
         </div>
@@ -658,6 +893,10 @@
         var per_second_sanitized = null;
         var per_click = 1;
         var dev_switch = 0; // check to 0 in prod
+        var current_planet_id = 1;
+        var planet_names = ["EARTH", "MARS"];
+        var planet_costs = [0, 100000, 1000000, 10000000];
+        var planet_unlocked = [true, false, false, false];
 
         // defining elements
         var title_buttons_elem = document.getElementById("title_nav_buttons");
@@ -676,6 +915,9 @@
         var nav_shop_button_elem = document.getElementById("nav_shop_button");
         var shop_money_display_elem = document.getElementById("shop_money_display");
         var shop_page_elem = document.getElementById("shop_page");
+        var planet_nav_elem = document.getElementById("planet_nav");
+        var prev_planet_elem = document.getElementById("prev_planet");
+        var next_planet_elem = document.getElementById("next_planet");
 
         // https://stackoverflow.com/questions/5199902/how-to-prevent-an-http-request-just-for-a-favicon
         try {
@@ -746,7 +988,67 @@
 			settings_buttons_elem.style.display = "none";
             nav_menu_button.style.display = "flex";
             nav_shop_button_elem.style.display = "flex";
+            planet_nav_elem.style.display = "block";
+            upd_planet_nav();
         };
+
+        function upd_planet_nav() {
+            const nameSpan = planet_nav_elem.querySelector("span:nth-child(2)");
+            const planetName = planet_names[current_planet_id - 1];
+            nameSpan.textContent = planetName;
+            
+            if (current_planet_id > 1) {
+                prev_planet_elem.classList.add("visible");
+            } else {
+                prev_planet_elem.classList.remove("visible");
+            }
+
+            const nextSpan = document.querySelector(".planet_nav .next");
+            if (current_planet_id >= planet_names.length) {
+                nextSpan.style.display = "none";
+            } else {
+                nextSpan.style.display = "inline";
+                const nextPlanetUnlocked = planet_unlocked[current_planet_id];
+                const nextPlanetCost = planet_costs[current_planet_id];
+                
+                nextSpan.classList.remove("locked", "can-unlock");
+                nextSpan.innerHTML = "&gt;";
+
+                if (!nextPlanetUnlocked) {
+                    if (money_pure >= nextPlanetCost)   {
+                        nextSpan.classList.add("can-unlock");
+                        nextSpan.innerHTML = "&gt;<div class='unlock-info'>Click to unlock " + planet_names[current_planet_id] + " for " + abbr_value(nextPlanetCost) + " ENERGY</div>";
+                    } else {
+                        nextSpan.classList.add("locked");
+                        nextSpan.innerHTML = "&gt;<div class='unlock-info'>Requires " + abbr_value(nextPlanetCost) + " ENERGY to unlock " + planet_names[current_planet_id] + "</div>";
+                    }
+                }
+            }
+        }
+
+        document.querySelector(".planet_nav .prev").addEventListener("click", function() {
+            if (current_planet_id > 1) {
+                current_planet_id--;
+                upd_planet_nav();
+            }
+        });
+
+        document.querySelector(".planet_nav .next").addEventListener("click", function() {
+            if (current_planet_id < planet_names.length) {
+                const nextPlanetUnlocked = planet_unlocked[current_planet_id];
+                const nextPlanetCost = planet_costs[current_planet_id];
+                
+                if (nextPlanetUnlocked) {
+                    current_planet_id++;
+                    upd_planet_nav();
+                } else if (money_pure >= nextPlanetCost) {
+                    money_pure -= nextPlanetCost;
+                    planet_unlocked[current_planet_id] = true;
+                    current_planet_id++;
+                    upd_planet_nav();
+                }
+            }
+        });
 
         function handle_settings_clicked() {
             title_buttons_elem.style.display = "none";
@@ -819,14 +1121,6 @@
             money_display_elem.innerHTML = money_sanitized + " ENERGY";
         }
 
-		function handle_save_clicked() {
-			console.log("Save init");
-		}
-
-		function handle_load_clicked() {
-			console.log("load init");
-		}
-
         function handle_menu_clicked() {
             title_buttons_elem.style.display = "flex";
             title_text_elem.style.display = "block";
@@ -842,6 +1136,9 @@
             copyright_notice_elem.style.display = "block";
             money_display_elem.style.display = "none";
             nav_shop_button_elem.style.display = "none";
+            planet_nav_elem.style.display = "none";
+            prev_planet_elem.style.display = "none";
+            next_planet_elem.style.display = "none";
         }
 
         function handle_shop_clicked() {
@@ -851,7 +1148,7 @@
             }
         }
 
-        // Add shop item configurations
+        // handle shop
         const shop_items = {
             1: {
                 name: "Solar Panel",
@@ -864,7 +1161,25 @@
                 base_cost: 1000,
                 cps: 5,
                 owned: 0
+            },
+            3: {
+                name: "Geothermal Plant",
+                base_cost: 5000,
+                cps: 25,
+                owned: 0
+            },
+            4: {
+                name: "Nuclear Reactor",
+                base_cost: 25000,
+                cps: 100,
+                owned: 0
             }
+            // 5: {
+            //     name: "Fusion Generator",
+            //     base_cost: 100000,
+            //     cps: 400,
+            //     owned: 0
+            // }
         };
         
         function buy_item(item_id) {
@@ -902,15 +1217,93 @@
             shop_page_elem.classList.remove("open");
         }
 
-        // ability to press space instead of click (scrapped)
-/*         document.body.onkeyup = function(e) {
-            if (e.key == " " ||
-                e.code == "Space" ||      
-                e.keyCode == 32      
-            ) {
-                handle_earth_clicked();
+        // handle saving and loading from options
+        function save_game() {
+            const game_state = {
+                money_pure: money_pure,
+                per_second: per_second,
+                per_click: per_click,
+                shop_items: shop_items,
+                current_planet_id: current_planet_id,
+                planet_unlocked: planet_unlocked
+            };
+            const game_state_string = JSON.stringify(game_state);
+            console.log("Game saved:", game_state_string);
+            return game_state_string;
+        }
+
+        function load_game(game_state_string) {
+            try {
+                const game_state = JSON.parse(game_state_string);
+                money_pure = game_state.money_pure;
+                per_second = game_state.per_second;
+                per_click = game_state.per_click;
+                current_planet_id = game_state.current_planet_id || 1;
+                if (game_state.planet_unlocked) {
+                    planet_unlocked = game_state.planet_unlocked;
+                }
+                Object.keys(game_state.shop_items).forEach(key => {
+                    shop_items[key] = game_state.shop_items[key];
+                });
+                update_shop_display();
+                upd_planet_nav();
+                console.log("Game loaded:", game_state);
+            } catch (error) {
+                console.error("Failed to load game:", error);
             }
-        } */
+        }
+        
+        function handle_save_clicked() {
+            try {
+                const game_state_string = save_game();
+                localStorage.setItem('planet_clicker_save', game_state_string);
+                if (dev_switch == 1) {
+                    console.log("Game state saved to localstorage");
+                }
+            } 
+            catch (error) {
+                const blob = new Blob([game_state_string], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'planet_clicker_save.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url); 
+                alert("Error occured, downloading save file.");
+            }
+        }
+
+        function handle_file_load(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const game_state_string = e.target.result;
+                    load_game(game_state_string);
+                    if (dev_switch == 1) {
+                        console.log("Game state loaded from file");
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        function handle_load_clicked() {
+            const game_state_string = localStorage.getItem('planet_clicker_save');
+            if (game_state_string) {
+                load_game(game_state_string);
+                if (dev_switch == 1) {
+                    console.log("Game state loaded from localStorage");
+                }
+            } else {
+                if (dev_switch == 1) {
+                    console.log("No saved game state found in localStorage, loading file upload prompt");
+                    handle_file_load();
+                }
+            }
+        }
     </script>
 </body>
 </html>
